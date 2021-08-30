@@ -8,8 +8,5 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class Anime {
-
     private String name;
-
-
 }

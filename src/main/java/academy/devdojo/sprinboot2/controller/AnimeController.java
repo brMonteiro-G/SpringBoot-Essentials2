@@ -14,11 +14,11 @@ import java.util.List;
 
 @RestController
 @Log4j2
-@RequiredArgsConstructor // public AnimeController(){this.dateUtil = dateUtil;}
+@RequiredArgsConstructor // public AnimeController(){this.dateUtil = dateUtil;} //injeção via construtor
 @RequestMapping("anime")
 public class AnimeController {
 
-    private DateUtil dateUtil;
+    private final DateUtil dateUtil;
 
     //http://localhost:8080/anime/list
     @GetMapping(path="list")
