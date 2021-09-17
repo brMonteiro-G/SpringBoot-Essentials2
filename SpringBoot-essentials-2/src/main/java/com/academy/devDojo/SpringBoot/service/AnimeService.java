@@ -1,49 +1,44 @@
 package com.academy.devDojo.SpringBoot.service;
 
+import com.academy.devDojo.SpringBoot.dtos.AnimePostRequestBody;
+import com.academy.devDojo.SpringBoot.dtos.AnimePutRequestBody;
 import com.academy.devDojo.SpringBoot.domain.Anime;
+import com.academy.devDojo.SpringBoot.repository.AnimeRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Service
+@RequiredArgsConstructor
 public class AnimeService {
 
-    private static List<Anime> animes ;
+    private final AnimeRepository animeRepository;
 
-    static {
-        animes = new ArrayList<>( List.of(new Anime(1L, "DBZ"), new Anime( 2L , "Naruto")));
+    public List<Anime> listAll() {
+        return animeRepository.findAll();
     }
 
-    public List<Anime> listAll(){
-        return animes;
-    }
-
-    public Anime findById(Long id){
-        return animes.stream()
-                .filter((anime) -> anime.getId().equals(id) )
-                .findFirst()
+    public Anime findByIdOrThrowBadRequestException(Long id) {
+        return animeRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Anime não encontrado"));
     }
 
-    public Anime save(Anime anime) {
-
-        anime.setId(ThreadLocalRandom.current().nextLong(0 , 1000));
-        animes.add(anime);
-        return anime;
+    public Anime save(AnimePostRequestBody animePostRequestBody) {
+        Anime anime = Anime.builder().name(animePostRequestBody.getName()).build();
+        return animeRepository.save(anime);
     }
 
     public void delete(Long id) {
-
-        animes.remove(findById(id));
+        animeRepository.delete(animeRepository.getById(id));
 
     }
 
-    public void replace(Anime anime){
-        animes.remove(anime.getId());
-        animes.add(anime);
+    public void replace(AnimePutRequestBody animePutRequestBody) {
+        Anime anime = Anime.builder().
+                name(animePutRequestBody.getName()).id(animePutRequestBody.getId()).build();
+
     }
 }
