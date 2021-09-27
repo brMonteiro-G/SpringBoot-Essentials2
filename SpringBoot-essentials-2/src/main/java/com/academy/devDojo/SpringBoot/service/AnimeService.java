@@ -3,6 +3,7 @@ package com.academy.devDojo.SpringBoot.service;
 import com.academy.devDojo.SpringBoot.domain.Anime;
 import com.academy.devDojo.SpringBoot.dtos.AnimePostRequestBody;
 import com.academy.devDojo.SpringBoot.dtos.AnimePutRequestBody;
+import com.academy.devDojo.SpringBoot.exception.BadRequestException;
 import com.academy.devDojo.SpringBoot.mapper.AnimeMapper;
 import com.academy.devDojo.SpringBoot.repository.AnimeRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class AnimeService {
 
     public Anime findByIdOrThrowBadRequestException(Long id) {
         return animeRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Anime não encontrado"));
+                .orElseThrow(() -> new BadRequestException( "Anime não encontrado"));
     }
 
     public Anime save(AnimePostRequestBody animePostRequestBody) {
