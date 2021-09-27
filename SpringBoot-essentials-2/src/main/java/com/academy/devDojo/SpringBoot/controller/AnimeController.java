@@ -33,6 +33,12 @@ public class AnimeController {
         return ResponseEntity.ok(animeservice.listAll());
     }
 
+    //http://localhost:8080/animes/find?name=<nome>
+    @GetMapping(path = "/find")
+    public ResponseEntity<List<Anime>> findByName(@RequestParam String name) {
+        return ResponseEntity.ok(animeservice.findByName(name));
+    }
+
     @GetMapping(path = "{id}")
     public ResponseEntity<Anime> findById(@PathVariable Long id) {
         return ResponseEntity.ok(animeservice.findByIdOrThrowBadRequestException(id));
