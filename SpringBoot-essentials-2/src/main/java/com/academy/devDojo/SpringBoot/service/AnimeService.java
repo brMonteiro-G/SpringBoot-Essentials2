@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Service
@@ -34,7 +35,7 @@ public class AnimeService {
     }
 
     @Transactional
-    public Anime save(AnimePostRequestBody animePostRequestBody) {
+    public Anime save(  AnimePostRequestBody animePostRequestBody) {
         Anime anime = AnimeMapper.INSTANCE.toAnime(animePostRequestBody);
         return animeRepository.save(anime);
     }
@@ -44,7 +45,7 @@ public class AnimeService {
 
     }
 
-    public void replace(AnimePutRequestBody animePutRequestBody) {
+    public void replace(  AnimePutRequestBody animePutRequestBody) {
         Anime savedAnime = findByIdOrThrowBadRequestException(animePutRequestBody.getId());
         Anime anime = AnimeMapper.INSTANCE.toAnime(animePutRequestBody);
         anime.setId(savedAnime.getId());
